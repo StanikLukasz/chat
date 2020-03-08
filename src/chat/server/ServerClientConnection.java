@@ -1,17 +1,18 @@
+package src.chat.server;
+
 import java.io.*;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
-class ClientConnection implements Runnable {
+class ServerClientConnection implements Runnable {
     Socket socket;
     String name;
     BufferedReader in;
     BlockingQueue<String> messageQueue;
-    Set<ClientConnection> clients;
+    Set<ServerClientConnection> clients;
 
-    public ClientConnection(Socket s, BlockingQueue<String> q, Set<ClientConnection> c) {
+    public ServerClientConnection(Socket s, BlockingQueue<String> q, Set<ServerClientConnection> c) {
         this.socket = s;
         this.messageQueue = q;
         this.clients = c;
