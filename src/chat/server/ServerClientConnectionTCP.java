@@ -5,14 +5,14 @@ import java.net.Socket;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
-class ServerClientConnection implements Runnable {
+class ServerClientConnectionTCP implements Runnable {
     Socket socket;
     String name;
     BufferedReader in;
     BlockingQueue<String> messageQueue;
-    Set<ServerClientConnection> clients;
+    Set<ServerClientConnectionTCP> clients;
 
-    public ServerClientConnection(Socket s, BlockingQueue<String> q, Set<ServerClientConnection> c) {
+    public ServerClientConnectionTCP(Socket s, BlockingQueue<String> q, Set<ServerClientConnectionTCP> c) {
         this.socket = s;
         this.messageQueue = q;
         this.clients = c;

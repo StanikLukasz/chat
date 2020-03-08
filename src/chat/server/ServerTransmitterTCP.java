@@ -7,10 +7,10 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public class ServerTransmitterTCP implements Runnable {
-    Set<ServerClientConnection> clients;
+    Set<ServerClientConnectionTCP> clients;
     BlockingQueue<String> messageQueue;
 
-    public ServerTransmitterTCP(Set<ServerClientConnection> c, BlockingQueue<String> m){
+    public ServerTransmitterTCP(Set<ServerClientConnectionTCP> c, BlockingQueue<String> m){
         this.clients = c;
         this.messageQueue = m;
     }
@@ -20,9 +20,8 @@ public class ServerTransmitterTCP implements Runnable {
             while (true) {
                 String message = messageQueue.take();
                 System.out.println(message);
-                for (ServerClientConnection client : clients) {
+                for (ServerClientConnectionTCP client : clients) {
                     try {
-                        System.out.println("Wysyłam do " + client.name);
                         Socket clientSocket = client.socket;
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                         out.println(message);

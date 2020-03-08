@@ -14,31 +14,28 @@ public class Server {
 
         final ExecutorService chat = Executors.newCachedThreadPool();
         int portNumber = 12345;
-        System.out.println("Chat server started at port " + portNumber);
-
-        Set<ServerClientConnection> clients = new HashSet<>();
-        BlockingQueue<String> messageQueue= new LinkedBlockingQueue<>();
-        chat.submit(new ServerTransmitterTCP(clients, messageQueue));
 
         ServerSocket serverSocketTCP = null;
         DatagramSocket serverSocketUDP = null;
+
+        Set<ServerClientConnectionTCP> clients = new HashSet<>();
+        BlockingQueue<String> messageQueue= new LinkedBlockingQueue<>();
+
+        System.out.println("Chat server started at port " + portNumber);
 
         try {
             serverSocketTCP = new ServerSocket(portNumber);
             serverSocketUDP = new DatagramSocket(portNumber);
 
-            byte[] receiveBuffer = new byte[1024];
+            chat.submit(new ServerTransmitterTCP(clients, messageQueue));
+            chat.submit(new ServerTransceiverUDP(serverSocketUDP, clients));
+
+
 
             while(true){
-                Arrays.fill(receiveBuffer, (byte)0);
-                DatagramPacket receivePacket = new DatagramPacket(receiveBuffer, receiveBuffer.length);
-                serverSocketUDP.receive(receivePacket);
-                String msg = new String(receivePacket.getData());
-                System.out.println("received msg: " + msg);
-
                 Socket clientSocket = serverSocketTCP.accept();
 
-                ServerClientConnection client = new ServerClientConnection(clientSocket, messageQueue, clients);
+                ServerClientConnectionTCP client = new ServerClientConnectionTCP(clientSocket, messageQueue, clients);
                 clients.add(client);
                 chat.submit(client);
 

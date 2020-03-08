@@ -1,11 +1,12 @@
 package src.chat.client;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,26 +31,31 @@ public class Client {
 
         try {
             socketTCP = new Socket(serverName, serverPort);
-
-            /////
             socketUDP = new DatagramSocket(socketTCP.getLocalPort());
-
-            InetAddress address = InetAddress.getByName("localhost");
-            byte[] sendBuffer = "Ping Java Udp".getBytes();
-
-            DatagramPacket sendPacket = new DatagramPacket(sendBuffer, sendBuffer.length, address, serverPort);
-            socketUDP.send(sendPacket);
-            /////
 
             PrintWriter out = new PrintWriter(socketTCP.getOutputStream(), true);
             service.submit(new ClientReceiverTCP(socketTCP));
+            service.submit(new ClientReceiverUDP(socketUDP));
 
             out.println(nick);
             System.out.println("CONNECTED TO CHAT");
 
+            File file = new File("./src/chat/client/art.txt");
+            byte[] messageUDP = Files.readAllBytes(file.toPath());
+
+            byte[] headerUDP = (nick + " sends:\n").getBytes();
+            byte[] result = Arrays.copyOf(headerUDP, headerUDP.length + messageUDP.length);
+            System.arraycopy(messageUDP, 0, result, headerUDP.length, messageUDP.length);
+
             while(true) {
                 String message = scanner.nextLine();
-                out.println(message);
+                if (message.equals("U")){
+                    InetAddress address = InetAddress.getByName("localhost");
+                    DatagramPacket sendPacket = new DatagramPacket(result, result.length, address, serverPort);
+                    socketUDP.send(sendPacket);
+                } else {
+                    out.println(message);
+                }
             }
 
         } catch (Exception e) {
