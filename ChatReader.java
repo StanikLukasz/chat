@@ -18,8 +18,13 @@ class ChatReader implements Runnable {
         try {
             while (true) {
                 String message = in.readLine();
-                System.out.println(message);
-                System.out.print("> ");
+                if (message != null) {
+                    System.out.println(message);
+                } else {
+                    System.out.println("Connection to chat server lost!");
+                    return;
+                }
+
             }
         } catch (IOException e){}
     }

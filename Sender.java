@@ -20,6 +20,7 @@ public class Sender implements Runnable {
                 System.out.println(message);
                 for (ClientConnection client : clients) {
                     try {
+                        System.out.println("Wysyłam do " + client.name);
                         Socket clientSocket = client.socket;
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                         out.println(message);

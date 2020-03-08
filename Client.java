@@ -24,25 +24,16 @@ public class Client {
         try {
             socket = new Socket(serverName, serverPort);
 
-            // in & out streams
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            ClientInput input = new ClientInput(scanner, socket);
             service.submit(new ChatReader(socket));
 
-            // send msg, read response
-            input.register(nick);
+            out.println(nick);
             System.out.println("CONNECTED TO CHAT");
 
             while(true) {
                 String message = scanner.nextLine();
                 out.println(message);
             }
-
-
-
-
-
 
         } catch (Exception e) {
             e.printStackTrace();

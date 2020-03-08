@@ -31,7 +31,7 @@ public class Server {
             while(true){
                 Socket clientSocket = serverSocket.accept();
 
-                ClientConnection client = new ClientConnection(clientSocket, messageQueue);
+                ClientConnection client = new ClientConnection(clientSocket, messageQueue, clients);
                 clients.add(client);
                 chat.submit(client);
 
