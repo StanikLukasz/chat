@@ -19,7 +19,6 @@ public class Sender implements Runnable {
                 String message = messageQueue.take();
                 System.out.println(message);
                 for (ClientConnection client : clients) {
-                    System.out.println("jestem tutaj");
                     try {
                         Socket clientSocket = client.socket;
                         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);

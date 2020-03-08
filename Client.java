@@ -34,13 +34,7 @@ public class Client {
             input.register(nick);
             System.out.println("CONNECTED TO CHAT");
 
-
-
-//            String response = in.readLine();
-//            System.out.println("received response: " + response);
-
             while(true) {
-                System.out.print("> ");
                 String message = scanner.nextLine();
                 out.println(message);
             }
@@ -48,7 +42,7 @@ public class Client {
 
 
 
-//            service.submit(input);
+
 
         } catch (Exception e) {
             e.printStackTrace();

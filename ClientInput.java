@@ -16,7 +16,6 @@ class ClientInput implements Runnable {
 
     public void run(){
         while(true){
-            System.out.print("> ");
             String message = scanner.nextLine();
             out.println(message);
         }

@@ -19,6 +19,7 @@ class ChatReader implements Runnable {
             while (true) {
                 String message = in.readLine();
                 System.out.println(message);
+                System.out.print("> ");
             }
         } catch (IOException e){}
     }
