@@ -28,8 +28,8 @@ public class JavaTcpServer {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 
                 // read msg, send response
-                String msg = in.readLine();
-                System.out.println("received msg: " + msg);
+//                String msg = in.readLine();
+//                System.out.println("received msg: " + msg);
                 out.println("Pong Java Tcp");
 
             }
